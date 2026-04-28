@@ -170,143 +170,129 @@ body::before {
   <button onclick="startGame()">PRESS START</button>
 
   <script>
-    let level = 0;
+let level = 0;
 
-    const levels = [
-      {
-        question: "Выбери лучшую песню всех времён и народов:",
-        a: "Baby Di - Upi down way ro",
-        b: "Rick Astley - Never Gonna Give You Up",
-        aText: "У тебя превосходный музыкальный вкус!",
-        bText: "Ты гей. Ладно, проходи дальше"
-      },
-      {
-        question: "Выбери блюдо:",
-        a: "спагетти с томатной пастой и сыром",
-        b: "какая-то там другая еда",
-        aText: "ммм даа, клади побольше",
-        bText: "ээм? всё ок? ладно, о вкусах не спорят"
-      },
-      {
-        question: "ты писька?",
-        a: "да, я писька",
-        b: "нет, ты писька",
-        aText: "пхаха сам сказал",
-        bText: "а теперь слушай меня внимательно: писька ты. точка. проходи дальше"
-      },
-      {
-        question: "когда ты разбогатеешь ты:",
-        a: "купишь себе крутую тачку и бургерную",
-        b: "отдашь все деньги мне",
-        aText: "ладно, но мне купи то же самое, но розовое",
-        bText: "чуваак, расслабься, ты не под прицелом. но да, это правильный ответ. в качестве вознаграждения я куплю тебе тач..ой бургер"
-      },
-      {
-        question: "хотел бы ты стать моим мужем?",
-        a: "да!",
-        b: "переформулируй и повтори 4 раза",
-        aText: "ура! он сказал да!",
-        bText: "ты будешь моим мужем? ты станешь моим мужем? хочешь быть моим мужем? ну так что?"
-      },
-      {
-        question: "что больше любишь во мне:",
-        a: "моё чувство юмора",
-        b: "моих девочек",
-        aText: "ой ну и подхалим же ты!",
-        bText: "ответ был очевиден...нет, я не буду тебе сейчас их показывать!"
-      },
-      {
-        question: "дата нашей годовщины:",
-        a: "28 апреля",
-        b: "28 перделя",
-        aText: "Андрей, если видишь слово перделя, выбирай его",
-        bText: "ахахах перделя ой не могу😂"
-      },
-      {
-        question: "А ты видишь луну?",
-        a: "За спиной",
-        b: "",
-        aText: "Значит мы рядом",
-        bText: ""
-      }
-    ];
-
-    function startGame() {
-  const sound = document.getElementById("clickSound");
-
-  if (sound) {
-    sound.play().then(() => {
-      sound.pause();
-      sound.currentTime = 0;
-    }).catch(() => {});
+const levels = [
+  {
+    question: "Выбери лучшую песню всех времён и народов:",
+    a: "Baby Di - Upi down way ro",
+    b: "Rick Astley - Never Gonna Give You Up",
+    aText: "У тебя превосходный музыкальный вкус!",
+    bText: "Ты гей. Ладно, проходи дальше"
+  },
+  {
+    question: "Выбери блюдо:",
+    a: "спагетти с томатной пастой и сыром",
+    b: "какая-то там другая еда",
+    aText: "ммм даа, клади побольше",
+    bText: "ээм? всё ок? ладно, о вкусах не спорят"
+  },
+  {
+    question: "ты писька?",
+    a: "да, я писька",
+    b: "нет, ты писька",
+    aText: "пхаха сам сказал",
+    bText: "а теперь слушай меня внимательно: писька ты. точка. проходи дальше"
+  },
+  {
+    question: "когда ты разбогатеешь ты:",
+    a: "купишь себе крутую тачку и бургерную",
+    b: "отдашь все деньги мне",
+    aText: "ладно, но мне купи то же самое, но розовое",
+    bText: "чуваак, расслабься, ты не под прицелом. но да, это правильный ответ. в качестве вознаграждения я куплю тебе тач..ой бургер"
+  },
+  {
+    question: "хотел бы ты стать моим мужем?",
+    a: "да!",
+    b: "переформулируй и повтори 4 раза",
+    aText: "ура! он сказал да!",
+    bText: "ты будешь моим мужем? ты станешь моим мужем? хочешь быть моим мужем? ну так что?"
+  },
+  {
+    question: "что больше любишь во мне:",
+    a: "моё чувство юмора",
+    b: "моих девочек",
+    aText: "ой ну и подхалим же ты!",
+    bText: "ответ был очевиден...нет, я не буду тебе сейчас их показывать!"
+  },
+  {
+    question: "дата нашей годовщины:",
+    a: "28 апреля",
+    b: "28 перделя",
+    aText: "Андрей, если видишь слово перделя, выбирай его",
+    bText: "ахахах перделя ой не могу😂"
+  },
+  {
+    question: "А ты видишь луну?",
+    a: "За спиной",
+    b: "",
+    aText: "Значит мы рядом",
+    bText: ""
   }
+];
 
+function startGame() {
   showLevel();
 }
 
-    function showLevel() {
-      const l = levels[level];
+function showLevel() {
+  const l = levels[level];
 
-      document.body.innerHTML = `
-        <h2>Level ${level + 1}</h2>
-        <p>${l.question}</p>
+  document.body.innerHTML = `
+    <h2>Level ${level + 1}</h2>
+    <p>${l.question}</p>
 
-        ${
-          l.b
-            ? `<button onclick="choose('a')">${l.a}</button>
-               <button onclick="choose('b')">${l.b}</button>`
-            : `<button onclick="choose('a')">${l.a}</button>`
-        }
-
-        <div id="result"></div>
-      `;
+    ${
+      l.b
+        ? `<button onclick="choose('a')">${l.a}</button>
+           <button onclick="choose('b')">${l.b}</button>`
+        : `<button onclick="choose('a')">${l.a}</button>`
     }
 
-    function choose(option) {
-      const result = document.getElementById("result");
-      result.classList.add("active");
-
-      let text = option === "a" ? levels[level].aText : levels[level].bText;
-
-      result.innerHTML = `
-        <div class="achievement">
-          🏆 ACHIEVEMENT UNLOCKED<br><br>
-          ${text}
-        </div>
-
-        <button onclick="nextLevel()">ДАЛЬШЕ →</button>
-      `;
-
-      // звук (без крашей)
-      const sound = document.getElementById("clickSound");
-     if (sound) {
-    try {
-    sound.pause();
-    sound.currentTime = 0;
-    sound.play();
-  } catch (e) {}
- }
+    <div id="result"></div>
+  `;
 }
-    function nextLevel() {
-      level++;
-      if (level < levels.length) {
-        showLevel();
-      } else {
-        finishGame();
-      }
-    }
 
-    function finishGame() {
-      document.body.innerHTML = `
-        <h1>🎉 LEVEL 8 UNLOCKED</h1>
-        <h2>LOVE MASTER ❤️</h2>
-        <p>8 years together...</p>
-        <p>Я тебя люблю ❤️</p>
-      `;
-    }
-  </script>
+function choose(option) {
+  const result = document.getElementById("result");
+  result.classList.add("active");
 
- <audio id="clickSound" src="https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3"></audio>
+  let text = option === "a" ? levels[level].aText : levels[level].bText;
 
+  result.innerHTML = `
+    <div class="achievement">
+      🏆 ACHIEVEMENT UNLOCKED<br><br>
+      ${text}
+    </div>
+
+    <button onclick="nextLevel()">ДАЛЬШЕ →</button>
+  `;
+
+  const sound = document.getElementById("clickSound");
+  if (sound) {
+    sound.currentTime = 0;
+    sound.play().catch(() => {});
+  }
+}
+
+function nextLevel() {
+  level++;
+  if (level < levels.length) {
+    showLevel();
+  } else {
+    finishGame();
+  }
+}
+
+function finishGame() {
+  document.body.innerHTML = `
+    <h1>🎉 LEVEL 8 UNLOCKED</h1>
+    <h2>LOVE MASTER ❤️</h2>
+    <p>8 years together...</p>
+    <p>Я тебя люблю ❤️</p>
+  `;
+}
+</script>
+<audio id="clickSound" src="https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3"></audio>
 </body>
 </html>
