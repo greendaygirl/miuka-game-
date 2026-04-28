@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Our Love Game</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+  margin: 0;
+  height: 100vh;
+  background: #0b0b0f;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Press Start 2P', monospace;
+  color: white;
+  flex-direction: column;
+  text-align: center;
+  padding: 20px;
+  animation: flicker 3s infinite;
+}
+
+/* заголовок (если есть h1) */
+h1 {
+  font-size: 22px;
+  margin-bottom: 10px;
+}
+
+/* кнопки (ответы) */
+button {
+  margin: 10px;
+  padding: 12px 16px;
+  font-size: 12px; /* 👈 было 10px, теперь читаемо */
+  line-height: 1.4;
+  border: 2px solid white;
+  background: transparent;
+  color: white;
+  cursor: pointer;
+  transition: 0.2s;
+  text-transform: uppercase;
+}
+
+/* hover эффект */
+button:hover {
+  background: white;
+  color: black;
+  transform: scale(1.05);
+}
+
+    h2, p, button, #result {
+      animation: fadeIn 0.4s ease;
+    }
+
+    p, h2, #result {
+      max-width: 600px;
+      line-height: 1.6;
+      word-wrap: break-word;
+    }
+
+    #result {
+      margin-top: 20px;
+      min-height: 0;
+      padding: 0;
+      border: none;
+      max-width: 600px;
+      line-height: 1.6;
+      transition: all 0.2s ease;
+    }
+
+    #result.active {
+      padding: 10px 15px;
+      border: 1px solid white;
+      min-height: 60px;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes pop {
+      0% { transform: scale(0.6); opacity: 0; }
+      70% { transform: scale(1.05); opacity: 1; }
+      100% { transform: scale(1); }
+    }
+
+    @keyframes flicker {
+      0% { opacity: 1; }
+      50% { opacity: 0.98; }
+      100% { opacity: 1; }
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 4px 4px;
+      pointer-events: none;
+    }
+
+    .achievement {
+      margin-top: 15px;
+      padding: 12px 14px;
+      border: 2px solid white;
+      border-radius: 6px;
+      background: rgba(255,255,255,0.05);
+      animation: pop 0.25s ease;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>OUR LOVE GAME</h1>
+  <p>Save file: 8 years ❤️</p>
+
+  <button onclick="startGame()">PRESS START</button>
+
+  <script>
+    let level = 0;
+
+    const levels = [
+      {
+        question: "Выбери лучшую песню всех времён и народов:",
+        a: "Baby Di - Upi down way ro",
+        b: "Rick Astley - Never Gonna Give You Up",
+        aText: "У тебя превосходный музыкальный вкус!",
+        bText: "Ты гей. Ладно, проходи дальше"
+      },
+      {
+        question: "Выбери блюдо:",
+        a: "спагетти с томатной пастой и сыром",
+        b: "какая-то там другая еда",
+        aText: "ммм даа, клади побольше",
+        bText: "ээм? всё ок? ладно, о вкусах не спорят"
+      },
+      {
+        question: "ты писька?",
+        a: "да, я писька",
+        b: "нет, ты писька",
+        aText: "пхаха сам сказал",
+        bText: "а теперь слушай меня внимательно: писька ты. точка. проходи дальше"
+      },
+      {
+        question: "когда ты разбогатеешь ты:",
+        a: "купишь себе крутую тачку и бургерную",
+        b: "отдашь все деньги мне",
+        aText: "ладно, но мне купи то же самое, но розовое",
+        bText: "чуваак, расслабься, ты не под прицелом. но да, это правильный ответ. в качестве вознаграждения я куплю тебе тач..ой бургер"
+      },
+      {
+        question: "хотел бы ты стать моим мужем?",
+        a: "да!",
+        b: "переформулируй и повтори 4 раза",
+        aText: "ура! он сказал да!",
+        bText: "ты будешь моим мужем? ты станешь моим мужем? хочешь быть моим мужем? ну так что?"
+      },
+      {
+        question: "что больше любишь во мне:",
+        a: "моё чувство юмора",
+        b: "моих девочек",
+        aText: "ой ну и подхалим же ты!",
+        bText: "ответ был очевиден...нет, я не буду тебе сейчас их показывать!"
+      },
+      {
+        question: "дата нашей годовщины:",
+        a: "28 апреля",
+        b: "28 перделя",
+        aText: "Андрей, если видишь слово перделя, выбирай его",
+        bText: "ахахах перделя ой не могу😂"
+      },
+      {
+        question: "А ты видишь луну?",
+        a: "За спиной",
+        b: "",
+        aText: "Значит мы рядом",
+        bText: ""
+      }
+    ];
+
+    function startGame() {
+      showLevel();
+    }
+
+    function showLevel() {
+      const l = levels[level];
+
+      document.body.innerHTML = `
+        <h2>Level ${level + 1}</h2>
+        <p>${l.question}</p>
+
+        ${
+          l.b
+            ? `<button onclick="choose('a')">${l.a}</button>
+               <button onclick="choose('b')">${l.b}</button>`
+            : `<button onclick="choose('a')">${l.a}</button>`
+        }
+
+        <div id="result"></div>
+      `;
+    }
+
+    function choose(option) {
+      const result = document.getElementById("result");
+      result.classList.add("active");
+
+      let text = option === "a" ? levels[level].aText : levels[level].bText;
+
+      result.innerHTML = `
+        <div class="achievement">
+          🏆 ACHIEVEMENT UNLOCKED<br><br>
+          ${text}
+        </div>
+
+        <button onclick="nextLevel()">ДАЛЬШЕ →</button>
+      `;
+
+      // звук (без крашей)
+      const sound = document.getElementById("clickSound");
+      if (sound) {
+        sound.currentTime = 0;
+        sound.play().catch(() => {});
+      }
+    }
+
+    function nextLevel() {
+      level++;
+      if (level < levels.length) {
+        showLevel();
+      } else {
+        finishGame();
+      }
+    }
+
+    function finishGame() {
+      document.body.innerHTML = `
+        <h1>🎉 LEVEL 8 UNLOCKED</h1>
+        <h2>LOVE MASTER ❤️</h2>
+        <p>8 years together...</p>
+        <p>Я тебя люблю ❤️</p>
+      `;
+    }
+  </script>
+
+  <audio id="clickSound" src="https://www.soundjay.com/buttons/sounds/button-16.mp3"></audio>
+
+</body>
+</html>
