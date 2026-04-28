@@ -64,12 +64,12 @@ button:hover {
   transform: scale(1.05);
 }
 
-/* анимации */
+/* анимации появления */
 h2, p, button, #result {
   animation: fadeIn 0.4s ease;
 }
 
-/* текст не растягивается */
+/* текст */
 p, h2, #result {
   max-width: 600px;
   line-height: 1.6;
@@ -105,38 +105,30 @@ p, h2, #result {
   line-height: 1.5;
 }
 
-/* keyframes */
-@keyframes fadeIn {
-  from { opacity: 0; transform: scale(0.95); }
-  to { opacity: 1; transform: scale(1); }
-}
-
-@keyframes pop {
-  0% { transform: scale(0.6); opacity: 0; }
-  70% { transform: scale(1.05); opacity: 1; }
-  100% { transform: scale(1); }
-}
-
-@keyframes flicker {
-  0% { opacity: 1; }
-  50% { opacity: 0.98; }
-  100% { opacity: 1; }
-}
-
-/* пиксельный фон */
-body::before {
-  content: "";
+/* 🎮 игровая сцена */
+.scene {
   position: fixed;
+  bottom: 0;
   width: 100%;
-  height: 100%;
-  background: radial-gradient(circle, rgba(255,255,255,0.03) 1px, transparent 1px);
-  background-size: 4px 4px;
+  height: 180px;
   pointer-events: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 0 20px;
+  z-index: 1;
 }
 
-/* 📱 МОБИЛЬНАЯ АДАПТАЦИЯ */
-@media (max-width: 600px) {
+/* 🧍 персонажи */
+.sprite {
+  width: 90px;
+  max-width: 25vw;
+  image-rendering: pixelated;
+  animation: float 2.5s ease-in-out infinite;
+}
 
+/* 📱 адаптация */
+@media (max-width: 600px) {
   h1 {
     font-size: 18px;
   }
@@ -158,11 +150,55 @@ body::before {
     font-size: 11px;
   }
 
+  .sprite {
+    width: 70px;
+  }
+
+  .scene {
+    height: 140px;
+    padding: 0 10px;
+  }
+}
+
+/* эффекты */
+body::before {
+  content: "";
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size: 4px 4px;
+  pointer-events: none;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes pop {
+  0% { transform: scale(0.6); opacity: 0; }
+  70% { transform: scale(1.05); opacity: 1; }
+  100% { transform: scale(1); }
+}
+
+@keyframes flicker {
+  0% { opacity: 1; }
+  50% { opacity: 0.98; }
+  100% { opacity: 1; }
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
 }
 </style>
 </head>
 
 <body>
+  <img src="images/toad.png" class="sprite toad">
+  <img src="images/toadette.png" class="sprite toadette">
 
   <h1>OUR LOVE GAME</h1>
   <p>Save file: 8 years ❤️</p>
