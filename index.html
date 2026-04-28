@@ -2,12 +2,13 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Our Love Game</title>
 
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 
   <style>
-    body {
+body {
   margin: 0;
   height: 100vh;
   background: #0b0b0f;
@@ -22,17 +23,29 @@
   animation: flicker 3s infinite;
 }
 
-/* заголовок (если есть h1) */
+/* заголовок */
 h1 {
   font-size: 22px;
   margin-bottom: 10px;
 }
 
-/* кнопки (ответы) */
+h2 {
+  font-size: 20px;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+p {
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+/* кнопки */
 button {
   margin: 10px;
   padding: 12px 16px;
-  font-size: 12px; /* 👈 было 10px, теперь читаемо */
+  font-size: 12px;
   line-height: 1.4;
   border: 2px solid white;
   background: transparent;
@@ -40,77 +53,113 @@ button {
   cursor: pointer;
   transition: 0.2s;
   text-transform: uppercase;
+
+  width: 100%;
+  max-width: 320px;
 }
 
-/* hover эффект */
 button:hover {
   background: white;
   color: black;
   transform: scale(1.05);
 }
 
-    h2, p, button, #result {
-      animation: fadeIn 0.4s ease;
-    }
+/* анимации */
+h2, p, button, #result {
+  animation: fadeIn 0.4s ease;
+}
 
-    p, h2, #result {
-      max-width: 600px;
-      line-height: 1.6;
-      word-wrap: break-word;
-    }
+/* текст не растягивается */
+p, h2, #result {
+  max-width: 600px;
+  line-height: 1.6;
+  word-wrap: break-word;
+}
 
-    #result {
-      margin-top: 20px;
-      min-height: 0;
-      padding: 0;
-      border: none;
-      max-width: 600px;
-      line-height: 1.6;
-      transition: all 0.2s ease;
-    }
+/* результат */
+#result {
+  margin-top: 20px;
+  min-height: 0;
+  padding: 0;
+  border: none;
+  max-width: 600px;
+  line-height: 1.6;
+  transition: all 0.2s ease;
+}
 
-    #result.active {
-      padding: 10px 15px;
-      border: 1px solid white;
-      min-height: 60px;
-    }
+#result.active {
+  padding: 10px 15px;
+  border: 1px solid white;
+  min-height: 60px;
+}
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: scale(0.95); }
-      to { opacity: 1; transform: scale(1); }
-    }
+/* достижение */
+.achievement {
+  margin-top: 15px;
+  padding: 12px 14px;
+  border: 2px solid white;
+  border-radius: 6px;
+  background: rgba(255,255,255,0.05);
+  animation: pop 0.25s ease;
+  font-size: 12px;
+  line-height: 1.5;
+}
 
-    @keyframes pop {
-      0% { transform: scale(0.6); opacity: 0; }
-      70% { transform: scale(1.05); opacity: 1; }
-      100% { transform: scale(1); }
-    }
+/* keyframes */
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
 
-    @keyframes flicker {
-      0% { opacity: 1; }
-      50% { opacity: 0.98; }
-      100% { opacity: 1; }
-    }
+@keyframes pop {
+  0% { transform: scale(0.6); opacity: 0; }
+  70% { transform: scale(1.05); opacity: 1; }
+  100% { transform: scale(1); }
+}
 
-    body::before {
-      content: "";
-      position: fixed;
-      width: 100%;
-      height: 100%;
-      background: radial-gradient(circle, rgba(255,255,255,0.03) 1px, transparent 1px);
-      background-size: 4px 4px;
-      pointer-events: none;
-    }
+@keyframes flicker {
+  0% { opacity: 1; }
+  50% { opacity: 0.98; }
+  100% { opacity: 1; }
+}
 
-    .achievement {
-      margin-top: 15px;
-      padding: 12px 14px;
-      border: 2px solid white;
-      border-radius: 6px;
-      background: rgba(255,255,255,0.05);
-      animation: pop 0.25s ease;
-    }
-  </style>
+/* пиксельный фон */
+body::before {
+  content: "";
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size: 4px 4px;
+  pointer-events: none;
+}
+
+/* 📱 МОБИЛЬНАЯ АДАПТАЦИЯ */
+@media (max-width: 600px) {
+
+  h1 {
+    font-size: 18px;
+  }
+
+  h2 {
+    font-size: 16px;
+  }
+
+  p {
+    font-size: 12px;
+  }
+
+  button {
+    font-size: 11px;
+    padding: 10px 12px;
+  }
+
+  .achievement {
+    font-size: 11px;
+  }
+
+}
+</style>
 </head>
 
 <body>
@@ -183,8 +232,17 @@ button:hover {
     ];
 
     function startGame() {
-      showLevel();
-    }
+  const sound = document.getElementById("clickSound");
+
+  if (sound) {
+    sound.play().then(() => {
+      sound.pause();
+      sound.currentTime = 0;
+    }).catch(() => {});
+  }
+
+  showLevel();
+}
 
     function showLevel() {
       const l = levels[level];
@@ -221,12 +279,14 @@ button:hover {
 
       // звук (без крашей)
       const sound = document.getElementById("clickSound");
-      if (sound) {
-        sound.currentTime = 0;
-        sound.play().catch(() => {});
-      }
-    }
-
+     if (sound) {
+    try {
+    sound.pause();
+    sound.currentTime = 0;
+    sound.play();
+  } catch (e) {}
+ }
+}
     function nextLevel() {
       level++;
       if (level < levels.length) {
@@ -246,7 +306,7 @@ button:hover {
     }
   </script>
 
-  <audio id="clickSound" src="https://www.soundjay.com/buttons/sounds/button-16.mp3"></audio>
+ <audio id="clickSound" src="https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3"></audio>
 
 </body>
 </html>
